@@ -6,8 +6,10 @@ import joblib
 import matplotlib.pyplot as plt
 import seaborn as sns
 import re
+import nltk
+
+nltk.download("stopwords")
 from nltk.corpus import stopwords
-from wordcloud import WordCloud
 from collections import Counter
 
 # -------------------------------
@@ -110,12 +112,16 @@ with col4:
 # ===============================
 st.subheader("WordCloud")
 
-text = " ".join(filtered_df["clean_text"])
-wc = WordCloud(width=800, height=400).generate(text)
+# TOP WORDS (instead of wordcloud)
+words = " ".join(filtered_df["clean_text"]).split()
+freq = Counter(words).most_common(10)
+
+w = [i[0] for i in freq]
+c = [i[1] for i in freq]
 
 fig5, ax5 = plt.subplots()
-ax5.imshow(wc)
-ax5.axis("off")
+ax5.bar(w, c)
+plt.xticks(rotation=45)
 st.pyplot(fig5)
 
 # ===============================
